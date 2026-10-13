@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strict": false,
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "es2022",
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+  "include": ["App.js", "src/**/*.js", "assets.d.ts"]
+}

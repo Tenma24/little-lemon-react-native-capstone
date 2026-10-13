@@ -11,14 +11,14 @@ const Session = createContext(null);
 const Stack = createNativeStackNavigator();
 const green = '#495E57', yellow = '#F4CE14';
 const pictures = { salad: require('./assets/salad.jpg'), bruschetta: require('./assets/bruschetta.jpg'), pasta: require('./assets/pasta.jpg'), fish: require('./assets/fish.jpg'), cake: require('./assets/cake.jpg'), lemonade: require('./assets/lemonade.jpg') };
-function Button({ title, onPress, disabled, secondary = false }) {
+function Button({ title, onPress, disabled = false, secondary = false }) {
   return <Pressable accessibilityRole="button" accessibilityState={{ disabled: !!disabled }} disabled={disabled} onPress={onPress} style={({ pressed }) => [s.button, secondary && s.secondary, disabled && s.disabled, pressed && { opacity: .75 }]}><Text style={s.buttonText}>{title}</Text></Pressable>;
 }
 function Field({ label, ...props }) {
   return <View style={s.field}><Text style={s.label}>{label}</Text><TextInput accessibilityLabel={label} style={s.input} placeholderTextColor="#79847F" {...props} /></View>;
 }
 function Brand() { return <View style={s.brand}><Text style={s.lemon}>◒</Text><Text style={s.brandText}>LITTLE LEMON</Text></View>; }
-function Message({ children, error }) { return children ? <Text accessibilityLiveRegion="polite" style={[s.message, error && { color: '#9C3328' }]}>{children}</Text> : null; }
+function Message({ children, error = false }) { return children ? <Text accessibilityLiveRegion="polite" style={[s.message, error && { color: '#9C3328' }]}>{children}</Text> : null; }
 function Page({ children, style }) { return <SafeAreaView style={s.safe}><KeyboardAvoidingView style={s.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}><ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={style}>{children}</ScrollView></KeyboardAvoidingView></SafeAreaView>; }
 function Onboarding() {
   const { save } = useContext(Session);
@@ -94,7 +94,7 @@ export default function App() {
   useEffect(() => { restore(); }, []);
   async function save(value) { const next = normalizeProfile(value); await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)); setProfile(next); }
   async function logout() { await AsyncStorage.removeItem(STORAGE_KEY); setProfile(null); }
-  return <SafeAreaProvider><StatusBar style="dark" /><View style={s.app}>{loading ? <View style={s.loading}><ActivityIndicator color={green} /><Text style={s.body}>Preparing your table…</Text></View> : error ? <View style={s.loading}><Message error>{error}</Message><Button title="Retry" onPress={restore} /></View> : <Session.Provider value={{ profile, save, logout }}><NavigationContainer><Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#FAFBF8' } }}>{profile ? <Stack.Group navigationKey="guest"><Stack.Screen name="Home" component={Home} /><Stack.Screen name="Profile" component={Profile} /></Stack.Group> : <Stack.Screen name="Onboarding" component={Onboarding} />}</Stack.Navigator></NavigationContainer></Session.Provider>}</View></SafeAreaProvider>;
+  return <SafeAreaProvider><StatusBar style="dark" /><View style={s.app}>{loading ? <View style={s.loading}><ActivityIndicator color={green} /><Text style={s.body}>Preparing your table…</Text></View> : error ? <View style={s.loading}><Message error>{error}</Message><Button title="Retry" onPress={restore} /></View> : <Session.Provider value={{ profile, save, logout }}><NavigationContainer><Stack.Navigator id="RootStack" screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#FAFBF8' } }}>{profile ? <Stack.Group navigationKey="guest"><Stack.Screen name="Home" component={Home} /><Stack.Screen name="Profile" component={Profile} /></Stack.Group> : <Stack.Screen name="Onboarding" component={Onboarding} />}</Stack.Navigator></NavigationContainer></Session.Provider>}</View></SafeAreaProvider>;
 }
 const s = StyleSheet.create({
   flex: { flex: 1 }, app: { flex: 1, width: '100%', maxWidth: 720, alignSelf: 'center', backgroundColor: '#FAFBF8' }, safe: { flex: 1, backgroundColor: '#FAFBF8' }, loading: { flex: 1, padding: 32, justifyContent: 'center', gap: 16 },
@@ -110,3 +110,4 @@ const s = StyleSheet.create({
   dish: { flexDirection: 'row', gap: 16, borderTopWidth: 1, borderColor: '#DEE3DB', paddingVertical: 20, alignItems: 'center' }, dishCopy: { flex: 1 }, dishName: { fontSize: 18, fontWeight: '700', color: '#253A32', marginBottom: 7 }, dishDescription: { fontSize: 13, lineHeight: 20, color: '#69766F' }, price: { color: green, fontSize: 16, fontWeight: '800', marginTop: 9 }, dishImage: { width: 98, height: 104, borderRadius: 12 }, empty: { paddingVertical: 24 },
   profile: { paddingHorizontal: 24, paddingBottom: 36 }, back: { width: 42, height: 42, borderRadius: 21, backgroundColor: '#E9EDE5', justifyContent: 'center', alignItems: 'center' }, backText: { fontSize: 24, color: green }, profileIdentity: { flexDirection: 'row', alignItems: 'center', gap: 18, paddingVertical: 24 }, largeAvatar: { width: 76, height: 76, borderRadius: 38, backgroundColor: green, justifyContent: 'center', alignItems: 'center' }, largeAvatarText: { color: yellow, fontSize: 27, fontWeight: '700' }, toggle: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10 }, logout: { borderTopWidth: 1, borderColor: '#DEE3DB', marginTop: 25, paddingTop: 12 }
 });
+
