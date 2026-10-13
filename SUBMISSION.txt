@@ -1,0 +1,15 @@
+Project title:
+Little Lemon — React Native Capstone
+
+GitHub repository:
+https://github.com/Tenma24/little-lemon-react-native-capstone
+
+Wireframe image:
+https://github.com/Tenma24/little-lemon-react-native-capstone/blob/main/design/wireframe.jpg
+
+Description:
+A React Native and Expo restaurant app with validated onboarding, a searchable menu with selectable categories, stack navigation, and a persistent editable profile. Logout clears saved profile data. The repository contains all project files, bundled illustrations, a JPG wireframe, editable SVG, screenshots, tests, and setup instructions.
+
+Сдача:
+My submission → ввести название и ссылку GitHub → Preview → Submit.
+После отправки самостоятельно оценить две работы других студентов.
